@@ -17,7 +17,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-         $tasklists = Task::all();
+        $tasklists = Task::all();
 
         return view('tasklists.index', [
             'tasklists' => $tasklists,
@@ -46,7 +46,13 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'status' => 'required|max:10',   // 追加
+            'content' => 'required|max:10',
+        ]);
+        
         $tasklist = new Task;
+        $tasklist->status = $request->status;    // 追加
         $tasklist->content = $request->content;
         $tasklist->save();
 
@@ -92,7 +98,14 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'status' => 'required|max:10',   // 追加
+            'content' => 'required|max:10',
+        ]);
+        
+        
         $tasklist = Task::find($id);
+        $tasklist->status = $request->status;    // 追加
         $tasklist->content = $request->content;
         $tasklist->save();
 
